@@ -1,2 +1,8 @@
+flask[async]
+flask-restx
+flask_cors
+Flask-SQLAlchemy
+SQLAlchemy-serializer
+
 feedparser
-flask
+python-dotenv
