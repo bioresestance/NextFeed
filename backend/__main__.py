@@ -13,4 +13,4 @@ web_server = get_web_server()
 
 
 if __name__ == "__main__":
-    web_server.run(use_reloader=True, host="0.0.0.0", debug=True)
+    web_server.run(debug=True)

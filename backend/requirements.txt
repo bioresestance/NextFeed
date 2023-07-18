@@ -1,8 +1,7 @@
-flask[async]
+flask
 flask-restx
 flask_cors
-Flask-SQLAlchemy
-SQLAlchemy-serializer
+Flask-PyMongo
 
 feedparser
 python-dotenv

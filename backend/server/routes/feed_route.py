@@ -2,12 +2,12 @@ from flask import Blueprint
 from flask_restx import Resource, Api
 
 
-feeds_route = Blueprint("Feeds", __name__)
+feeds_route = Blueprint("feeds_route", __name__)
 
 api = Api(feeds_route)
 
 
 @api.route("/")
-class InvoiceRoute(Resource):
+class TestRoute(Resource):
     def get(self):
-        return "Hello World"
+        return {"Hello": "world"}
