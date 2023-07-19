@@ -6,11 +6,23 @@
 from fastapi import FastAPI, APIRouter
 from pymongo import MongoClient
 from dotenv import dotenv_values
+from fastapi.middleware.cors import CORSMiddleware
 from server.routes import feed_route, user_route
-from os import environ
 
 app = FastAPI()
 config = dotenv_values(".env")
+
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")
