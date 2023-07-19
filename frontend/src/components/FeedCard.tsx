@@ -7,7 +7,7 @@ type FeedCardProps = {
 
 function FeedCard(props: FeedCardProps) {
   return (
-    <a href="/" className="card w-96 bg-secondary text-primary shadow-xl m-10">
+    <a href="/" className="card w-96 bg-secondary text-primary shadow-xl m-10 border-2">
       <figure>
         <img
           src="https://picsum.photos/400/200"
@@ -21,10 +21,10 @@ function FeedCard(props: FeedCardProps) {
         <div className="card-actions justify-end">
           {props.tags.length > 0
             ? props.tags.map((tag, index) => (
-                <div key={index} className="badge badge-outline">
-                  {tag}
-                </div>
-              ))
+              <div key={index} className="badge badge-outline">
+                {tag}
+              </div>
+            ))
             : ""}
         </div>
       </div>
