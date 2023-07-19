@@ -17,7 +17,7 @@ function App() {
     <>
 
       <h1>NextFeed - Your Content Aggregator</h1>
-      {JSON.stringify(feeds, null, 4)}
+      {JSON.stringify(feeds.data, null, 4)}
 
     </>
   )
