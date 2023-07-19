@@ -5,11 +5,11 @@
 @file main.py
 """
 
+import uvicorn
 from server import get_web_server
 
 
 web_server = get_web_server()
-print("Web Server Created")
 
 if __name__ == "__main__":
-    web_server.run(debug=True)
+    uvicorn.run("main:web_server", reload=True)

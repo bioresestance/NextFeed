@@ -3,35 +3,43 @@
 @brief This package contains the web server and all related code.
 """
 
+from fastapi import FastAPI, APIRouter
+from pymongo import MongoClient
+from dotenv import dotenv_values
+from server.routes import feed_route, user_route
+from os import environ
 
-from flask import Flask
-from flask_restx import Api
-from flask_cors import CORS
-from flask_pymongo import PyMongo
-
-
-
-app = Flask(__name__)
-cors = CORS(app)
-restApi = Api(app)
-# pymongo = PyMongo(app)
+app = FastAPI()
+config = dotenv_values(".env")
 
 
-def get_web_server() -> Flask:
+@app.on_event("startup")
+def startup_event():
+    app.mongodb_client = MongoClient(config["MONGO_URI"])
+    app.database = app.mongodb_client["NextFeed"]
+    print("Connected to the MongoDB database!")
+
+
+@app.on_event("shutdown")
+def shutdown_event():
+    app.mongodb_client.close()
+    print("Disconnected from the MongoDB database!")
+
+
+def get_web_server() -> FastAPI:
     """
         @brief This function creates the web server and configures it.
         @return The web server.
     """
     # pylint: disable=import-outside-toplevel
-    from server.routes.feed_route import feeds_route
-
-    # Register the different blueprints.
-
-    # Appends API routes with /api/v1
-    app.register_blueprint(feeds_route, url_prefix="/api/v1/feeds/")
-
-    # restApi.init_app(app)
-    # cors.init_app(app)
-    # # pymongo.init_app(app)
+    
+    
+    v1_router = APIRouter( prefix="/api/v1", tags=["v1"] )
+    
+    v1_router.include_router(feed_route.router)
+    v1_router.include_router(user_route.router)
+    
+    app.include_router(v1_router)
+    
 
     return app
