@@ -1,11 +1,15 @@
+"""
+Module to parse RSS feeds and return the data in a format that can be used by the frontend.
+"""
+
 import feedparser
 
-feed = None
+FEED = None
 
-with open("backend/feeds.txt", mode="r") as f:
-    feed = f.read()
+with open("backend/feeds.txt", mode="r", encoding= "utf8") as f:
+    FEED = f.read()
 
-for line in feed.split("\n"):
+for line in FEED.split("\n"):
     print("-" * 80)
     print(f"Checking '{line}'")
     d = feedparser.parse(line)
