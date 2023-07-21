@@ -10,24 +10,24 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-cors = CORS()
+# cors = CORS()
 restApi = Api()
 
 
 def get_web_server() -> Flask:
-
     """
         @brief This function creates the web server and configures it.
         @return The web server.
     """
+    # pylint: disable=import-outside-toplevel
 
     # Register the different blueprints.
-    # from server.routes import api_routes
+    from server.routes import api_v1_routes 
 
     # # Appends API routes with /api/v1
-    # app.register_blueprint(api_routes, url_prefix="/api/v1/")
+    app.register_blueprint(api_v1_routes, url_prefix="/api/v1/")
 
-    restApi.init_app(app, doc=True)
-    cors.init_app(app)
+    restApi.init_app(app, doc=False)
+    # cors.init_app(app)
 
     return app
