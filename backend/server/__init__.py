@@ -7,14 +7,14 @@
 from flask import Flask
 from flask_restx import Api
 from flask_cors import CORS
-from flask_pymongo import PyMongo
+# from flask_pymongo import PyMongo
 
 
 
 app = Flask(__name__)
 cors = CORS()
 restApi = Api()
-pymongo = PyMongo()
+# pymongo = PyMongo()
 
 
 def get_web_server() -> Flask:

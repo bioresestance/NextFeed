@@ -11,4 +11,4 @@ from .feed_route import feeds_route
 api_routes = Blueprint("api_routes", __name__)
 
 # Nest all individual routes under the api_route.
-api_routes.register_blueprint(feeds_route, url_prefix="/feeds")
+api_routes.register_blueprint(feeds_route, url_prefix="/feed")
