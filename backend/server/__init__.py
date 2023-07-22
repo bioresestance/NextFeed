@@ -7,14 +7,14 @@
 from flask import Flask
 from flask_restx import Api
 from flask_cors import CORS
-# from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo
 
 
 
 app = Flask(__name__)
-cors = CORS()
-restApi = Api()
-# pymongo = PyMongo()
+cors = CORS(app)
+restApi = Api(app)
+# pymongo = PyMongo(app)
 
 
 def get_web_server() -> Flask:
@@ -23,15 +23,15 @@ def get_web_server() -> Flask:
         @return The web server.
     """
     # pylint: disable=import-outside-toplevel
-    from server.routes import api_routes
+    from server.routes.feed_route import feeds_route
 
     # Register the different blueprints.
 
     # Appends API routes with /api/v1
-    app.register_blueprint(api_routes, url_prefix="/api/v1/")
+    app.register_blueprint(feeds_route, url_prefix="/api/v1/feeds/")
 
-    restApi.init_app(app)
-    cors.init_app(app)
-    # pymongo.init_app(app)
+    # restApi.init_app(app)
+    # cors.init_app(app)
+    # # pymongo.init_app(app)
 
     return app

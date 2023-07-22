@@ -11,4 +11,5 @@ from server import get_web_server
 web_server = get_web_server()
 print("Web Server Created")
 
-web_server.run(debug=True)
+if __name__ == "__main__":
+    web_server.run(debug=True)
