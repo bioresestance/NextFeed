@@ -16,7 +16,7 @@ function App() {
   return (
     <>
 
-      <h1>NextFeed - Your Content Aggregator</h1>
+      <h1 className="text-3xl font-bold underline">NextFeed - Your Content Aggregator</h1>
       {JSON.stringify(feeds.data, null, 4)}
 
     </>
