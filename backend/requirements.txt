@@ -1,11 +1,8 @@
-flask
-flask-restx
-flask_cors
-Flask-PyMongo
-
 fastapi
 uvicorn[standard]
-motor
+mongoengine
 pymongo
 feedparser
 python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]

@@ -3,5 +3,9 @@
         "editor.defaultFormatter": "ms-python.python"
     },
     "python.formatting.provider": "none",
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "cSpell.words": [
+        "passlib",
+        "pymongo"
+    ]
 }
