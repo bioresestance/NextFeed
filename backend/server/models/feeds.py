@@ -10,6 +10,7 @@ class Feed(BaseModel):
     title: str
     link: str
     description: str
+    thumbnail_url: str
     
     
 class FeedItemSummary(BaseModel):

@@ -13,7 +13,7 @@ def read_feeds(request: Request):
     
     response = []
     for feed in request.app.data:
-        response.append( Feed( title=feed["title"], link=feed["base_link"], description=feed["description"] ) )
+        response.append( Feed( title=feed["title"], link=feed["link"], description=feed["description"], thumbnail_url=str(feed["thumbnail_url"]) ) )
     
     return response
 

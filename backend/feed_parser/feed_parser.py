@@ -25,9 +25,11 @@ class Feed:
     Dataclass to hold the data from a feed.
     """
     title: str = ""
-    base_link: str = ""
+    link: str = ""
     description: str = ""
     last_updated: str = ""
+    thumbnail_url:str = ""
+    tags = None
     items: list[FeedItem] = None
 
 
@@ -58,9 +60,11 @@ class FeedParser:
 
         new_feed = Feed()
         new_feed.title = self._parser.feed.get("title", "No Title Provided")
-        new_feed.base_link = self._parser.feed.get("link", "No Link Provided")
+        new_feed.link = self._parser.feed.get("link", "No Link Provided")
         new_feed.description = self._parser.feed.get("description", "No Description Provided")
         new_feed.last_updated = self._parser.feed.get("published", "No Last Publish date Provided")
+        new_feed.thumbnail_url = self._parser.feed.get("image", "No Thumbnail Provided")
+        new_feed.tags = self._parser.feed.get("categories", "No Tags Provided")
         new_feed.items = []
 
         for entry in self._parser.entries:
