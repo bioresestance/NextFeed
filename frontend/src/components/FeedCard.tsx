@@ -7,7 +7,7 @@ type FeedCardProps = {
 
 function FeedCard(props: FeedCardProps) {
   return (
-    <div className="card w-96 bg-secondary text-primary shadow-xl m-10">
+    <a href="/" className="card w-96 bg-secondary text-primary shadow-xl m-10">
       <figure>
         <img
           src="https://picsum.photos/400/200"
@@ -28,7 +28,7 @@ function FeedCard(props: FeedCardProps) {
             : ""}
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
