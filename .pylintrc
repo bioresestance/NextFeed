@@ -36,6 +36,7 @@ load-plugins=
     pylint.extensions.redefined_variable_type,
     pylint.extensions.comparison_placement,
     pylint.extensions.mccabe,
+    pylint_mongoengine,
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
@@ -99,6 +100,9 @@ disable=
     attribute-defined-outside-init,
     invalid-name,
     missing-docstring,
+    missing-class-docstring,    
+    missing-function-docstring,
+    missing-module-docstring,
     protected-access,
     too-few-public-methods,
     # handled by black
@@ -107,10 +111,9 @@ disable=
     fixme,
     cyclic-import,
     import-error,
-    missing-final-newline,
-    missing-class-docstring,
-    missing-function-docstring,
-    missing-module-docstring,
+    missing-final-newline, # Anoying, and low risk
+    wrong-import-position 
+    logging-fstring-interpolation,
 
 
 [REPORTS]

@@ -1,6 +1,9 @@
 fastapi
+pydantic[email]
 uvicorn[standard]
 mongoengine
+pylint-mongoengine
+blinker
 pymongo
 feedparser
 python-dotenv

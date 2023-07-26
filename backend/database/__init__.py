@@ -1,6 +1,5 @@
 import logging
-from mongoengine import connect
-from dotenv import dotenv_values
+from mongoengine import connect, disconnect
 
 from .models.users import User, AdminUser
 from .models.subscriptions import Subscription
@@ -24,6 +23,11 @@ def initialize():
         admin = AdminUser(
             username="admin",
             email="admin@ajb-tech.ca",
+            first_name="Admin",
+            last_name="User",
+            zip_code="N/A",
+            country="N/A",
+            profile_picture=""
         )
         AdminUser.hash_password(admin, password="admin1234")
         
@@ -33,3 +37,9 @@ def initialize():
         admin.subscriptions = [sub1, sub2, sub3]     
         admin.save()
         
+
+def uninitialize():
+    """ Closes the database connection.
+    """
+    logger.info("Closing the MongoDB database connection.")
+    disconnect()

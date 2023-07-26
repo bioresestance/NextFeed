@@ -5,7 +5,10 @@
     "python.formatting.provider": "none",
     "python.analysis.typeCheckingMode": "off",
     "cSpell.words": [
+        "fastapi",
         "passlib",
-        "pymongo"
+        "pymongo",
+        "uninitialize",
+        "uvicorn"
     ]
 }
