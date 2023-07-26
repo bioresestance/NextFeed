@@ -5,5 +5,6 @@ from mongoengine import StringField, BooleanField, DateTimeField, EmbeddedDocume
 class Subscription(EmbeddedDocument):
     url = URLField(required=True, unique=True)
     added_at = DateTimeField(required=True, default=datetime.datetime.utcnow)
+    enabled = BooleanField(required=True, default=True)
     user_tags = ListField(StringField())
-    enabled = BooleanField(default=True)
+    user_title = StringField(required=True)

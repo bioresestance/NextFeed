@@ -11,6 +11,7 @@ class Feed(BaseModel):
     link: str
     description: str
     thumbnail_url: str
+    tags: list[str]
     
     
 class FeedItemSummary(BaseModel):
@@ -22,7 +23,4 @@ class FeedItemSummary(BaseModel):
 class FeedItem(FeedItemSummary):
     article: str
     
-class FeedItemInDB(FeedItem):
-    feed_id: int
-    feed_item_id: int
     

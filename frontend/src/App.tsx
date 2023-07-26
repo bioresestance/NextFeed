@@ -17,19 +17,18 @@ function App() {
       <h1 className="text-3xl font-bold underline text-center text-primary">
         NextFeed - Your Content Aggregator
       </h1>
-      {}
+      { }
       <div className="flex justify-center">
         {feeds.data
           ? feeds.data.map((feed: any, id: number) => (
-              <FeedCard
-                key={id}
-                title={feed.title}
-                tags={["Tech", "Art", "News"]}
-                description={feed.description}
-                thumbnail_url={feed.thumbnail_url}
-                // tags={feed.tags}
-              />
-            ))
+            <FeedCard
+              key={id}
+              title={feed.title}
+              tags={feed.tags}
+              description={feed.description}
+              thumbnail_url={feed.thumbnail_url}
+            />
+          ))
           : ""}
       </div>
     </>

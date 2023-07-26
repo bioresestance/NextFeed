@@ -9,7 +9,7 @@ class User(Document):
     """
     email = EmailField(required=True, unique=True)
     username = StringField(required=True, unique=True)
-    password = StringField(required=True, min_length=6)
+    password = StringField(required=True)
     is_active = BooleanField(default=True)
     created_at = DateTimeField(default=datetime.datetime.utcnow)
     first_name = StringField()
@@ -23,7 +23,7 @@ class User(Document):
     profile_picture = StringField()
     subscriptions = EmbeddedDocumentListField(Subscription)
     meta = {'collection': 'users', 
-            "inheritance": True,
+            "allow_inheritance": True,
             "indexes": [
                 "email",
                 "username",
@@ -32,7 +32,7 @@ class User(Document):
             }
     
 
-    def hash_password(self, password: str)-> str:
+    def hash_password(self, password: str)-> None:
         """
         Hashes the user password.
         """
