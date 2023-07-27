@@ -112,7 +112,7 @@ disable=
     cyclic-import,
     import-error,
     missing-final-newline, # Anoying, and low risk
-    wrong-import-position 
+    wrong-import-position, 
     logging-fstring-interpolation,
 
 
