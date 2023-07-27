@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/python:1-3.11-bullseye
+    volumes:
+      - ../..:/workspaces:cached
+    network_mode: service:mongodb
+    command: sleep infinity
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin

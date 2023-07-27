@@ -1,0 +1,8 @@
+👋 Welcome to the Codespace for NextFeed!
+
+This space has already been configured with Python3.11 and the latest Node.js version.
+
+As well, a MongoDB instance has been created for Dev uses, it can be accessed on localhost:27017 of the codespace.
+
+Happy Coding!
+

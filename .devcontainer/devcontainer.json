@@ -1,0 +1,52 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "NextFeed Fullstack Dev Container",
+	"dockerComposeFile": "./docker-compose.yaml",
+	"service": "devcontainer",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-contrib/features/pylint:2": {}
+	},
+	"portsAttributes": {
+		"5173": {
+			"label": "Frontend-Node"
+		},
+		"8000": {
+			"label": "Backend-Python"
+		},
+		"27017": {
+			"label": "MongoDB"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mongodb.mongodb-vscode",
+				"donjayamanne.python-extension-pack",
+				"mikestead.dotenv",
+				"bradlc.vscode-tailwindcss",
+				"ahmadawais.shades-of-purple",
+				"christian-kohler.npm-intellisense",
+				"zainchen.json",
+				"github.copilot",
+				"github.vscode-github-actions",
+				"github.copilot-chat"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python3",
+				"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+				"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+				"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+				"python.linting.flake8Enabled": false,
+				"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+				"python.linting.mypyEnabled": false,
+				"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+				"python.linting.pylintEnabled": true
+			}
+		}
+	}
+}
