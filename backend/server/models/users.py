@@ -10,8 +10,7 @@ class NewUserRequest(BaseModel):
 
 
 class NewUserResponse(BaseModel):
-    user_id: str | None = None # Used to return user ID if user creation succeeded
-    message: str | None = None # Used to return error message if user creation failed
+    user_id: str
 
 
 class GetUserResponse(BaseModel):

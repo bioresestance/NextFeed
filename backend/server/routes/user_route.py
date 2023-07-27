@@ -1,7 +1,7 @@
 from logging import getLogger
 from fastapi import APIRouter, HTTPException, status
 from backend.database.models.users import User
-from backend.server.models.users import GetUserResponse
+from backend.server.models.users import GetUserResponse, NewUserRequest, NewUserResponse
 
 router = APIRouter( prefix="/user", tags=["user"] )
 logger = getLogger("UserRoute")
@@ -30,6 +30,17 @@ def get_user_by_id(user_id: str) -> GetUserResponse:
 
 @router.get("/username/{username}")
 def get_user_by_username(username: str) -> GetUserResponse:
+    """ Get a user by their username.
+
+    Args:
+        username (str): The username of the user to get.
+
+    Raises:
+        HTTPException: If the username is invalid or the user is not found.
+
+    Returns:
+        GetUserResponse: The user.
+    """
     if (username is None) or (username == ""):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid username, please check and try again.")
     
@@ -44,3 +55,20 @@ def get_user_by_username(username: str) -> GetUserResponse:
 
 
     return GetUserResponse.from_database_user(user)
+
+@router.get("/new", response_model=NewUserResponse, status_code=status.HTTP_201_CREATED, response_description="User created successfully.", description="Creates a new user.")
+def create_user(new_user_request: NewUserRequest) -> NewUserResponse:
+    
+    try:
+        new_user = User( username=new_user_request.username,
+                        email=new_user_request.email,
+                        first_name=new_user_request.first_name,
+                        last_name=new_user_request.last_name )
+        new_user.hash_password(new_user_request.password)
+        new_user.save()
+    except Exception as e:
+        logger.warning(f"Exception occurred while trying to create new user: {e}") #pylint: disable=logging-fstring-interpolation
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error creating user, please try again.") from e
+    
+    return NewUserResponse(user_id=str(new_user.id))
+                        

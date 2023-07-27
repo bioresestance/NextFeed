@@ -4,8 +4,6 @@
 """
 
 from fastapi import FastAPI, APIRouter
-from pymongo import MongoClient
-from dotenv import dotenv_values
 from fastapi.middleware.cors import CORSMiddleware
 from server.routes import feed_route, user_route
 from logging import getLogger
