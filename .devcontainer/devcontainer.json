@@ -34,9 +34,10 @@
 				"mikestead.dotenv",
 				"bradlc.vscode-tailwindcss",
 				"ahmadawais.shades-of-purple",
+				"ms-python.pylint"
 			],
 			"settings": {
-				"python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python3",
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
 				"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
 				"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
 				"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
