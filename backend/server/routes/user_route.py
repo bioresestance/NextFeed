@@ -1,7 +1,8 @@
 from logging import getLogger
 from fastapi import APIRouter, HTTPException, status
-from backend.database.models.users import User
+from mongoengine.errors import NotUniqueError
 from backend.server.models.users import GetUserResponse, NewUserRequest, NewUserResponse
+from backend.database.models.users import User
 
 router = APIRouter( prefix="/user", tags=["user"] )
 logger = getLogger("UserRoute")
@@ -19,7 +20,7 @@ def get_user_by_id(user_id: str) -> GetUserResponse:
     try:
         user:User = User.objects(id=user_id).first()
     except Exception as e:
-        logger.warning(f"Exception occurred while trying to find user with ID {user_id}: {e}") #pylint: disable=logging-fstring-interpolation
+        logger.warning(f"Exception occurred while trying to find user with ID {user_id}: {e}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found, please check spelling and try again.") from e
     
     if user is None:
@@ -47,7 +48,7 @@ def get_user_by_username(username: str) -> GetUserResponse:
     try:
         user:User = User.objects(username=username).first()
     except Exception as e:
-        logger.warning(f"Exception occurred while trying to find user with username {username}: {e}") #pylint: disable=logging-fstring-interpolation
+        logger.warning(f"Exception occurred while trying to find user with username {username}: {e}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found, please check spelling and try again.") from e
     
     if user is None:
@@ -56,9 +57,9 @@ def get_user_by_username(username: str) -> GetUserResponse:
 
     return GetUserResponse.from_database_user(user)
 
-@router.get("/new", response_model=NewUserResponse, status_code=status.HTTP_201_CREATED, response_description="User created successfully.", description="Creates a new user.")
+@router.post("/new", response_model=NewUserResponse, status_code=status.HTTP_201_CREATED, response_description="User created successfully.", description="Creates a new user.")
 def create_user(new_user_request: NewUserRequest) -> NewUserResponse:
-    
+    print(new_user_request)
     try:
         new_user = User( username=new_user_request.username,
                         email=new_user_request.email,
@@ -66,8 +67,11 @@ def create_user(new_user_request: NewUserRequest) -> NewUserResponse:
                         last_name=new_user_request.last_name )
         new_user.hash_password(new_user_request.password)
         new_user.save()
+    except NotUniqueError as e:
+        logger.warning(f"Exception {type(e)} occurred while trying to create new user: {e}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists, please change either username or email") from e
     except Exception as e:
-        logger.warning(f"Exception occurred while trying to create new user: {e}") #pylint: disable=logging-fstring-interpolation
+        logger.warning(f"Exception {type(e)} occurred while trying to create new user: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error creating user, please try again.") from e
     
     return NewUserResponse(user_id=str(new_user.id))

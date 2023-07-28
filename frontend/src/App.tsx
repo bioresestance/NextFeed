@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import FeedCard from "./components/FeedCard";
+import get_host from "./utils/host"
 
 function App() {
   const [feeds, setFeeds] = useState<any>([]);
 
   useEffect(() => {
-    axios("http://localhost:8000/api/v1/feeds/").then((res) => {
+    const url:string = get_host("api/v1/feeds/")
+    axios(url).then((res) => {
       setFeeds(res);
       console.log(res.data);
     });
