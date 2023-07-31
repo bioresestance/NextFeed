@@ -13,7 +13,7 @@
 	},
 	"forwardPorts": [
 		5173,
-		8000,
+		8000
 	],
 	"portsAttributes": {
 		"5173": {
@@ -26,6 +26,7 @@
 			"label": "MongoDB"
 		}
 	},
+	"postCreateCommand": " bash .devcontainer/startup_script.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
