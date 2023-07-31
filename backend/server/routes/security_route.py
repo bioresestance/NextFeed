@@ -3,14 +3,15 @@ from logging import getLogger
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import  OAuth2PasswordRequestForm
 from backend.database.models.users import User
-from backend.server.security import get_current_user as current_user
+from backend.server.security import get_current_user as current_user, create_json_web_token
+from backend.server.models.security import AccessToken
 
 router = APIRouter( prefix="", tags=["security"] )
 logger = getLogger("SecurityRoute")
 
 
 @router.post("/login")        
-async def login_user(login_form: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def login_user(login_form: Annotated[OAuth2PasswordRequestForm, Depends()]) -> AccessToken:
     
     try:
         user:User = User.objects(username=login_form.username).first()     
@@ -26,7 +27,9 @@ async def login_user(login_form: Annotated[OAuth2PasswordRequestForm, Depends()]
         logger.warning(f"User {user.username} attempted to log in with an incorrect password.")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password.")
     
-    return {"access_token": user.username, "token_type": "bearer"}
+    token = create_json_web_token(user.username)
+    
+    return token
 
 
 

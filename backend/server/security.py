@@ -1,11 +1,19 @@
+from datetime import timedelta, datetime
 from typing import Annotated
 
-from fastapi import Depends
+from jose import JWTError, jwt
+from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from backend.database.models.users import User
 from backend.database.models.subscriptions import Subscription
+from backend.server.models.security import AccessToken, AccessTokenContents
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
+
+# TODO: Use another storage method, this is only for dev uses for now.
+JWT_SECRET = "7a622820781eff8983daebd5552995d510c674d870b5e02a332360e0e68ed985"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 def get_current_user(user_token: Annotated[str, Depends(oauth2_scheme)]) -> User | None:
@@ -20,7 +28,7 @@ def get_current_user(user_token: Annotated[str, Depends(oauth2_scheme)]) -> User
         User | None: Either a logged in user or None.
     """
     
-    return User.objects(username=user_token).first()
+    return verify_json_web_token(user_token)
 
 
 def get_user_subs(user: Annotated[User, Depends(get_current_user)]) -> list[Subscription]:
@@ -35,3 +43,42 @@ def get_user_subs(user: Annotated[User, Depends(get_current_user)]) -> list[Subs
         User | None: Either a logged in user or None.
     """
     return user.subscriptions
+
+
+def create_json_web_token(username:str, expires_time: timedelta | None = None) -> AccessToken:
+    
+    """Generates a JSON Web Token thats been encoded with needed data to verify authentication.
+
+    Returns:
+        AccessToken: Model containing the generated bearer token.
+    """
+    
+    if expires_time:
+        expire = datetime.utcnow() + expires_time
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+        
+    # Attempt to encode the contents into the token.
+    encoded_jwt = jwt.encode(dict(AccessTokenContents(sub=username, exp=expire)), JWT_SECRET, algorithm=ALGORITHM)
+    
+    # Return the Access Token model, ready to be returned as is.
+    return AccessToken(access_token=encoded_jwt)
+
+
+def verify_json_web_token(token) -> User | None:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError as e:
+        raise credentials_exception from e
+    user = User.objects(username=username).first()
+    if user is None:
+        raise credentials_exception
+    return user
