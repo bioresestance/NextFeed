@@ -1,11 +1,34 @@
+from typing import Annotated
 from logging import getLogger
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from mongoengine.errors import NotUniqueError
 from backend.server.models.users import GetUserResponse, NewUserRequest, NewUserResponse
 from backend.database.models.users import User
+from backend.server.security import get_current_user as current_user
 
 router = APIRouter( prefix="/user", tags=["user"] )
 logger = getLogger("UserRoute")
+
+
+@router.get("/", description="Get the currently logged in user")
+def get_current_user(user: Annotated[User, Depends(current_user)]) -> GetUserResponse:
+    """ Gets the currently logged in user.
+
+    Args:
+        user : The current user.
+
+    Raises:
+        HTTPException: If the user is not found.
+
+    Returns:
+        GetUserResponse: The user.
+    """
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User is not logged in.")
+    
+    return GetUserResponse.from_database_user(user)
+
+
 
 
 @router.get("/id/{user_id}")
@@ -76,3 +99,4 @@ def create_user(new_user_request: NewUserRequest) -> NewUserResponse:
     
     return NewUserResponse(user_id=str(new_user.id))
                         
+

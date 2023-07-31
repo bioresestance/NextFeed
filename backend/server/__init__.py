@@ -3,11 +3,11 @@
 @brief This package contains the web server and all related code.
 """
 
-from fastapi import FastAPI, APIRouter
-from fastapi.middleware.cors import CORSMiddleware
-from server.routes import feed_route, user_route
 from logging import getLogger
 from collections.abc import Callable
+from fastapi import FastAPI, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
+from server.routes import feed_route, user_route, security_route
 
 logger = getLogger("Server Main")
 app = FastAPI()
@@ -67,6 +67,7 @@ def get_web_server(starting_event: Callable | None = None, stopping_event: Calla
     
     v1_router.include_router(feed_route.router)
     v1_router.include_router(user_route.router)
+    v1_router.include_router(security_route.router)
     
     app.include_router(v1_router)
     

@@ -27,8 +27,7 @@ class User(Document):
             "indexes": [
                 "email",
                 "username",
-            ],
-            "auto_create_index ": True
+            ]
             }
     
 
