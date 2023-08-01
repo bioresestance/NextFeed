@@ -16,7 +16,7 @@ import uvicorn
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-from server import get_web_server
+from api import get_web_server
 from database import initialize as initialize_database, uninitialize as uninitialize_database
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s (%(name)s) : %(message)s")
