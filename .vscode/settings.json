@@ -10,5 +10,10 @@
         "pymongo",
         "uninitialize",
         "uvicorn"
-    ]
+    ],
+    "python.testing.pytestArgs": [
+        "backend"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

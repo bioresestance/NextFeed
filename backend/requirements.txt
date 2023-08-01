@@ -10,3 +10,7 @@ feedparser
 python-dotenv
 passlib[bcrypt]
 python-jose[cryptography]
+
+# Testing dependencies
+pytest
+mongomock

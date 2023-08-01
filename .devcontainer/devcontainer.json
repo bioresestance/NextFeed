@@ -35,7 +35,8 @@
 				"mikestead.dotenv",
 				"bradlc.vscode-tailwindcss",
 				"ahmadawais.shades-of-purple",
-				"ms-python.pylint"
+				"ms-python.pylint",
+				"pkief.material-icon-theme"
 			],
 			"settings": {
 				"python.defaultInterpreterPath": "/usr/local/bin/python",
