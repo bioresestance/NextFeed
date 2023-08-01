@@ -71,14 +71,27 @@ def verify_json_web_token(token) -> User | None:
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
+    # Decode the token.
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
+        token_contents:AccessTokenContents = AccessTokenContents(**payload)
     except JWTError as e:
         raise credentials_exception from e
-    user = User.objects(username=username).first()
+    
+    # Validate the username and check if the token has expired
+    if (token_contents.username is None) or (token_contents.exp is None):
+        raise credentials_exception
+    
+    if datetime.utcnow() > token_contents.exp:
+        raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="token is expired, please log in again",
+        headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # It has passed all checks, return the user from the database.
+    user = User.objects(username=token_contents.username).first()
     if user is None:
         raise credentials_exception
     return user
