@@ -14,3 +14,4 @@ python-jose[cryptography]
 # Testing dependencies
 pytest
 mongomock
+pylint-pytest
