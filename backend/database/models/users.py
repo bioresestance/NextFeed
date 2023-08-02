@@ -2,10 +2,11 @@ import datetime
 from mongoengine import Document, StringField, EmailField, BooleanField, DateTimeField, EmbeddedDocumentListField
 from backend.utils.hashing import Hasher
 from .subscriptions import Subscription
+from .feed_favorite import Favorite
 
 class User(Document):
     """
-    User model for storing user related details in MongoDB
+    Database model to describe a user document in mongoDB.
     """
     email = EmailField(required=True, unique=True)
     username = StringField(required=True, unique=True)
@@ -22,6 +23,7 @@ class User(Document):
     country = StringField()
     profile_picture = StringField()
     subscriptions = EmbeddedDocumentListField(Subscription)
+    feed_favorites = EmbeddedDocumentListField(Favorite)
     meta = {'collection': 'users', 
             "allow_inheritance": True,
             "indexes": [

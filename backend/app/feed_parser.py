@@ -1,7 +1,6 @@
 """
     @brief ...
 """
-
 from dataclasses import dataclass
 import feedparser
 
