@@ -1,29 +1,13 @@
 import pytest
 from backend.database.models.users import User
 from backend.database.models.subscriptions import Subscription
-from helpers.database_connection import mock_database_fixture
+from backend.tests.helpers.fixtures.database_user import create_new_user_func_fixture
+from backend.tests.helpers.fixtures.database_connection import mock_database_class_fixture
+from backend.tests.helpers.utils.user_database import create_new_test_user, add_test_subscription_to_user
 
 
 
-@pytest.fixture(scope="function")
-def create_test_user_fixture(mock_database_fixture):
-    new_user = User(username="test_user", email="test@test.ca", first_name="test", last_name="user", phone="1234567890", address="123 test street", city="test city", state="test state", zip_code="12345", country="test country", profile_picture="test_picture")
-    User.hash_password(new_user, "test_password")
-    new_user.save()
-
-
-
-def add_test_subscription_to_user(user: User):
-    
-    try:
-        sub = Subscription(url="https://testurl.ca/feed.json", user_title="test_title", user_tags=["test_tag"])
-        user.subscriptions.append(sub)
-        user.save()
-    except Exception:
-        pass
-
-
-@pytest.mark.usefixtures("create_test_user_fixture")
+@pytest.mark.usefixtures("mock_database_class_fixture", "create_new_user_func_fixture")
 class TestNewUser:
     
     def test_create_new_user(self):
@@ -87,8 +71,16 @@ class TestNewUser:
         user = User.objects().first()
         assert user.profile_picture == "test_picture"
         
+    def test_user_has_no_subscriptions(self):
+        user = User.objects().first()
+        assert len(user.subscriptions) == 0
+        
+    def test_duplicate_username_raises_error(self):
+        with pytest.raises(Exception):
+            create_new_test_user()
+        
 
-@pytest.mark.usefixtures("create_test_user_fixture")
+@pytest.mark.usefixtures("mock_database_class_fixture", "create_new_user_func_fixture")
 class TestUserSubscriptions:
     
     def test_user_has_no_default_subscriptions(self):
@@ -99,10 +91,10 @@ class TestUserSubscriptions:
         user = User.objects().first()
         add_test_subscription_to_user(user)
         assert len(user.subscriptions) == 1
-    
-    @pytest.mark.skip(reason="failing currently")
-    def test_user_cant_add_duplicate_subscription(self):
+        
+    def test_user_can_add_multiple_subscriptions(self):
         user = User.objects().first()
         add_test_subscription_to_user(user)
         add_test_subscription_to_user(user)
-        assert len(user.subscriptions) == 1
+        assert len(user.subscriptions) == 2
+    
