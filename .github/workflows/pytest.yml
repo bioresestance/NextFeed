@@ -1,4 +1,4 @@
-name: Pylint
+name: Unit test - Backend
 
 on: 
   push:
