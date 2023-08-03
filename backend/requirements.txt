@@ -10,6 +10,7 @@ feedparser
 python-dotenv
 passlib[bcrypt]
 python-jose[cryptography]
+schedule
 
 # Testing dependencies
 pytest

@@ -7,10 +7,13 @@ from .models.subscriptions import Subscription
 
 logger = logging.getLogger("Database")
 
+data_base_connection = None
+
 
 def initialize():
     """ Initializes the database connection.
     """
+    global data_base_connection
     connect( db="NextFeed", Username="admin", Password="admin" )
     logger.info("Connected to the MongoDB database!")
 

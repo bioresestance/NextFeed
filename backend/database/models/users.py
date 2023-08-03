@@ -1,5 +1,5 @@
 import datetime
-from mongoengine import Document, StringField, EmailField, BooleanField, DateTimeField, EmbeddedDocumentListField
+from mongoengine import Document, StringField, EmailField, BooleanField, DateTimeField, EmbeddedDocumentListField, IntField
 from backend.utils.hashing import Hasher
 from .subscriptions import Subscription
 from .feed_favorite import Favorite
@@ -24,6 +24,7 @@ class User(Document):
     profile_picture = StringField()
     subscriptions = EmbeddedDocumentListField(Subscription)
     feed_favorites = EmbeddedDocumentListField(Favorite)
+    feed_update_interval = IntField(default=60)
     meta = {'collection': 'users', 
             "allow_inheritance": True,
             "indexes": [
