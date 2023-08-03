@@ -74,13 +74,33 @@ class FeedParser:
             new_item.description = entry.get("description", "No Description Provided")
             new_item.published_by = entry.get("author", "No Author Provided")
             new_item.published_at = entry.get("published", "No Publish date Provided")
-            new_item.thumbnail_url = entry.get("image", "No Thumbnail Provided")
-            new_item.content = entry.get("content", "No Content Provided")
+            thumbnail_url = entry.get("image", "No Thumbnail Provided")
+            
+            if thumbnail_url is str:
+                new_item.thumbnail_url = thumbnail_url
+            elif thumbnail_url is dict:
+                if ("href" in thumbnail_url) and (thumbnail_url["href"] is str):
+                    new_item.thumbnail_url = thumbnail_url["href"]
+            else:
+                new_item.thumbnail_url = "No Thumbnail Provided"
+            content = entry.get("content", "No Content Provided")
+            
+            if content is str:
+                new_item.content = content
+            elif content is list:
+                if content[0] is dict:
+                    if ("value" in content[0]) and (content[0]["value"] is str):
+                        new_item.content = content[0]["value"]               
+            else:
+                new_item.content = "No Content Provided"
 
 
             new_feed.items.append(new_item)
 
         self._feed = new_feed
+
+    def get_feed(self) -> Feed:
+        return self._feed
 
 
     def __str__(self) -> str:
