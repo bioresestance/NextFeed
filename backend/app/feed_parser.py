@@ -85,11 +85,11 @@ class FeedParser:
                 new_item.thumbnail_url = "No Thumbnail Provided"
             content = entry.get("content", "No Content Provided")
             
-            if content is str:
+            if type(content) is str:
                 new_item.content = content
-            elif content is list:
-                if content[0] is dict:
-                    if ("value" in content[0]) and (content[0]["value"] is str):
+            elif type(content) is list:
+                if len(content) > 0 and (type(content[0]) is dict):
+                    if ("value" in content[0]) and (type(content[0]["value"]) is str):
                         new_item.content = content[0]["value"]               
             else:
                 new_item.content = "No Content Provided"

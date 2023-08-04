@@ -24,7 +24,11 @@ def parse_user_feeds(user: User):
     """
     user_subscriptions: list[Subscription] = user.subscriptions
     for sub in user_subscriptions:
-        parser = FeedParser(sub.url)
+        
+        try:
+            parser = FeedParser(sub.url)
+        except Exception:
+            continue
         feed = parser.get_feed()
         
         feed_source = FeedSource.objects(url=sub.url, subscribed_user=user).first()
@@ -49,7 +53,6 @@ def parse_user_feeds(user: User):
                                  published_by=item.published_by,
                                 )
             feed_item.save()
-            # print(item)
             
 
 
@@ -62,5 +65,5 @@ def parse_user_feeds(user: User):
 def init_user_scheduling(scheduler: Scheduler):
     
     for user in User.objects(is_active=True):
-        # scheduler.every(user.feed_update_interval).seconds.do(feed_parser_runner, job=parse_user_feeds, user=user)
-        scheduler.every(10).seconds.do(feed_parser_runner, job=parse_user_feeds, user=user)
+        scheduler.every(user.feed_update_interval).seconds.do(feed_parser_runner, job=parse_user_feeds, user=user)
+        # scheduler.every(10).seconds.do(feed_parser_runner, job=parse_user_feeds, user=user)
