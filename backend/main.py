@@ -29,6 +29,6 @@ if __name__ == "__main__":
     thread_stop = threading.Event()
     thread = threading.Thread(target=app_main, args=(thread_stop,))
     thread.start()
-    uvicorn.run("main:web_server", reload=True)
+    uvicorn.run("main:web_server", reload=True, host="0.0.0.0", port=8000)
     thread_stop.set()
     thread.join()

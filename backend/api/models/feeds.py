@@ -13,6 +13,21 @@ class Feed(BaseModel):
     thumbnail_url: str
     tags: list[str]
     
+    @staticmethod
+    def from_database_feed_source(feed_source) -> 'Feed':
+        """
+            @brief This function converts a database feed source into a Feed object.
+            @param feed_source The database feed source.
+            @return The Feed.
+        """
+        return Feed(
+            title=feed_source.title,
+            link=feed_source.url,
+            description="",
+            thumbnail_url="",
+            tags=[]
+        )
+    
     
 class FeedItemSummary(BaseModel):
     title: str

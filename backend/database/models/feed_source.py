@@ -14,3 +14,4 @@ class FeedSource(Document):
     created = DateTimeField(required=True, default=datetime.datetime.utcnow)
     enabled = BooleanField(required=True, default=True)
     
+   
