@@ -2,18 +2,16 @@ import logging
 from mongoengine import connect, disconnect
 
 from .models.users import User, AdminUser
-from .models.subscriptions import Subscription
+from .models.feed_source import FeedSource
 
 
 logger = logging.getLogger("Database")
 
-data_base_connection = None
 
 
 def initialize():
     """ Initializes the database connection.
     """
-    global data_base_connection
     connect( db="NextFeed", Username="admin", Password="admin" )
     logger.info("Connected to the MongoDB database!")
 
@@ -33,12 +31,18 @@ def initialize():
             profile_picture=""
         )
         AdminUser.hash_password(admin, password="admin1234")
-        
-        sub1 = Subscription(url="https://hackaday.com/blog/feed/", user_tags=["news", "tech"], user_title="Hackaday")
-        sub2 = Subscription(url="https://themonsterunderthebed.net/feed/", user_tags=["comics"], user_title="The Monster Under the Bed")
-        sub3 = Subscription(url="https://feeds.simplecast.com/54nAGcIl", user_tags=["news"], user_title="The Daily")
-        admin.subscriptions = [sub1, sub2, sub3]     
         admin.save()
+        
+        
+        sub1 = FeedSource(source_title="Hackaday", source_url="https://hackaday.com/blog/feed/", user_tags=["news", "tech"], user_title="Hackaday", subscribed_user = admin)
+        sub1.save()
+        sub2 = FeedSource(source_title="The Monster Under the Bed", source_url="https://themonsterunderthebed.net/feed/", user_tags=["comics"], user_title="The Monster Under the Bed", subscribed_user = admin)
+        sub2.save()
+        sub3 = FeedSource(source_title="The Daily", source_url="https://feeds.simplecast.com/54nAGcIl", user_tags=["news"], user_title="The Daily", subscribed_user = admin)
+        sub3.save()
+        admin.subscriptions = [sub1, sub2, sub3]
+        admin.save()
+        
         
 
 def uninitialize():

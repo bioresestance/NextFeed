@@ -74,22 +74,22 @@ class FeedParser:
             new_item.description = entry.get("description", "No Description Provided")
             new_item.published_by = entry.get("author", "No Author Provided")
             new_item.published_at = entry.get("published", "No Publish date Provided")
-            thumbnail_url = entry.get("image", "No Thumbnail Provided")
+            thumbnail = entry.get("media_thumbnail", "")
             
-            if thumbnail_url is str:
-                new_item.thumbnail_url = thumbnail_url
-            elif thumbnail_url is dict:
-                if ("href" in thumbnail_url) and (thumbnail_url["href"] is str):
-                    new_item.thumbnail_url = thumbnail_url["href"]
+            if isinstance(thumbnail, str):
+                new_item.thumbnail_url = thumbnail
+            elif isinstance(thumbnail, list):
+                if ("url" in thumbnail[0]) and (thumbnail[0]["url"] is str):
+                    new_item.thumbnail_url = thumbnail[0]["url"]
             else:
-                new_item.thumbnail_url = "No Thumbnail Provided"
+                new_item.thumbnail_url = ""
             content = entry.get("content", "No Content Provided")
             
-            if type(content) is str:
+            if isinstance(content, str):
                 new_item.content = content
-            elif type(content) is list:
-                if len(content) > 0 and (type(content[0]) is dict):
-                    if ("value" in content[0]) and (type(content[0]["value"]) is str):
+            elif isinstance(content, list):
+                if len(content) > 0 and isinstance(content[0], dict):
+                    if ("value" in content[0]) and isinstance(content[0]["value"], str):
                         new_item.content = content[0]["value"]               
             else:
                 new_item.content = "No Content Provided"

@@ -1,8 +1,8 @@
 import datetime
-from mongoengine import Document, StringField, EmailField, BooleanField, DateTimeField, EmbeddedDocumentListField, IntField
+from mongoengine import Document, StringField, EmailField, BooleanField, DateTimeField, EmbeddedDocumentListField, IntField, ListField, ReferenceField
 from backend.utils.hashing import Hasher
-from .subscriptions import Subscription
 from .feed_favorite import Favorite
+from .feed_source import FeedSource
 
 class User(Document):
     """
@@ -22,7 +22,7 @@ class User(Document):
     zip_code = StringField()
     country = StringField()
     profile_picture = StringField()
-    subscriptions = EmbeddedDocumentListField(Subscription)
+    subscriptions = ListField(ReferenceField(FeedSource))
     feed_favorites = EmbeddedDocumentListField(Favorite)
     feed_update_interval = IntField(default=60)
     meta = {'collection': 'users', 

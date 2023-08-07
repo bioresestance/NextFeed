@@ -32,11 +32,13 @@ def app_main(stop_event: threading.Event):
         next_run_time = user_feed_scheduler.idle_seconds
         
         # Negative time means the sheduler has a job to run.
-        if type(next_run_time) is float and next_run_time < 0:
+        if isinstance(next_run_time, float) and next_run_time < 0:
             continue
         # Wait the specified time before running the next job.
-        if next_run_time is float:
+        if isinstance(next_run_time, float):
             sleep(min(next_run_time, 5))
         # No jobs to run, so wait 1 second.
         else:
             sleep(1)
+            
+    mongoengine.disconnect()

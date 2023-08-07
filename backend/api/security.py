@@ -5,7 +5,7 @@ from jose import JWTError, jwt
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from backend.database.models.users import User
-from backend.database.models.subscriptions import Subscription
+from backend.database.models.feed_source import FeedSource
 from backend.api.models.security import AccessToken, AccessTokenContents
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
@@ -31,7 +31,7 @@ def get_current_user(user_token: Annotated[str, Depends(oauth2_scheme)]) -> User
     return verify_json_web_token(user_token)
 
 
-def get_user_subs(user: Annotated[User, Depends(get_current_user)]) -> list[Subscription]:
+def get_user_subs(user: Annotated[User, Depends(get_current_user)]) -> list[FeedSource]:
     """Dependency to get the current user's subs from the database based on the token.
     
        If the token is invalid (stale or incorrect), this will return None.
