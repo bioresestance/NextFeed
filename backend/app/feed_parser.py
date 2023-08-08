@@ -49,7 +49,11 @@ class FeedParser:
             print(f"Feed '{self._feed_url}' is invalid.")
             raise ValueError(f"Feed '{self._feed_url}' is invalid.")
 
-        self._load()
+        try:
+            self._load()
+        except Exception as e:
+            print(f"Error loading feed: {e}")
+            raise e
 
 
     def _load(self):
@@ -62,7 +66,13 @@ class FeedParser:
         new_feed.link = self._parser.feed.get("link", "No Link Provided")
         new_feed.description = self._parser.feed.get("description", "No Description Provided")
         new_feed.last_updated = self._parser.feed.get("published", "No Last Publish date Provided")
-        new_feed.thumbnail_url = self._parser.feed.get("image", "No Thumbnail Provided")
+        thumbnail_url = self._parser.feed.get("image", "")
+        
+        if thumbnail_url != "":
+            new_feed.thumbnail_url = thumbnail_url["href"]
+        else:
+            new_feed.thumbnail_url = "https://via.placeholder.com/150"     
+        
         new_feed.tags = self._parser.feed.get("categories", "No Tags Provided")
         new_feed.items = []
 
@@ -76,24 +86,17 @@ class FeedParser:
             new_item.published_at = entry.get("published", "No Publish date Provided")
             thumbnail = entry.get("media_thumbnail", "")
             
-            if isinstance(thumbnail, str):
-                new_item.thumbnail_url = thumbnail
-            elif isinstance(thumbnail, list):
-                if ("url" in thumbnail[0]) and (thumbnail[0]["url"] is str):
-                    new_item.thumbnail_url = thumbnail[0]["url"]
+            if thumbnail != "":
+                new_item.thumbnail_url = thumbnail[0]["url"]
             else:
-                new_item.thumbnail_url = ""
-            content = entry.get("content", "No Content Provided")
+                new_item.thumbnail_url = new_feed.thumbnail_url
+
+            content = entry.get("content", "")
             
-            if isinstance(content, str):
-                new_item.content = content
-            elif isinstance(content, list):
-                if len(content) > 0 and isinstance(content[0], dict):
-                    if ("value" in content[0]) and isinstance(content[0]["value"], str):
-                        new_item.content = content[0]["value"]               
+            if content == "":
+                new_item.content = content[0]["value"]
             else:
                 new_item.content = "No Content Provided"
-
 
             new_feed.items.append(new_item)
 

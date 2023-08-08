@@ -43,7 +43,7 @@ def parse_user_feeds(user: User):
                                  description=item.description,
                                  published_at= datetime.strptime(str(item.published_at), "%a, %d %b %Y %H:%M:%S %z"),
                                  published_by=item.published_by,
-                                 thumbnail_url=item.thumbnail_url or "",
+                                 thumbnail_url=item.thumbnail_url or "https://via.placeholder.com/150",
                                 )
             feed_item.save()
             
