@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, Request, Depends
 from backend.database.models.users import User
 from backend.database.models.feed_source import FeedSource
-from backend.api.models.feeds import Feed
+from backend.api.models.feed_source import Feed
 from backend.api.security import get_current_user as current_user
 
 router = APIRouter( prefix="/feeds", tags=["feeds"] )

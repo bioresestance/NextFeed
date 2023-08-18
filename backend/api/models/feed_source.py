@@ -29,13 +29,6 @@ class Feed(BaseModel):
         )
     
     
-class FeedItemSummary(BaseModel):
-    title: str
-    link: str
-    description: str
-    published: str
-    
-class FeedItem(FeedItemSummary):
-    article: str
+
     
     
